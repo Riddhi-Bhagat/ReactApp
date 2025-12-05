@@ -3,13 +3,18 @@ import { Routes, Route, Link, useNavigate } from "react-router-dom";
 import Login from "./pages/Login";
 import Profile from "./pages/Profile";
 import ProtectedRoute from "./components/ProtectedRoute";
+import { logoutJSON } from "./api";
 
 const AppRoutes = () => {
   const [user, setUser] = useState(null);
   const navigate = useNavigate();
 
   const handleLogout = async () => {
-    await fetch("/api/auth/logout", { method: "POST", credentials: "include" }).catch(()=>{});
+    try {
+      await logoutJSON();         
+    } catch (e) {}
+
+    localStorage.removeItem("token");  
     setUser(null);
     navigate("/login");
   };
@@ -22,7 +27,7 @@ const AppRoutes = () => {
         <Link to="/">Home</Link> {" | "}
         {user ? (
           <>
-            Welcome {user.name} |{" "}
+            Welcome {user?.name || user?.email} |{" "}
             <button onClick={handleLogout}>Logout</button>
           </>
         ) : (

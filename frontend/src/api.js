@@ -1,8 +1,17 @@
 import axios from "axios";
 
 const API = axios.create({
-  baseURL: "http://localhost:5000/api",   // <- FINAL FIX
+  baseURL: "http://localhost:5000/api",
   withCredentials: true,
+});
+
+// Token auto add in every request
+API.interceptors.request.use((config) => {
+  const token = localStorage.getItem("token");
+  if (token) {
+    config.headers.Authorization = `Bearer ${token}`;
+  }
+  return config;
 });
 
 // POST request
@@ -34,5 +43,15 @@ export async function putJSON(path, body) {
     throw err.response?.data || { message: "Request failed" };
   }
 }
+
+export async function logoutJSON() {
+  try {
+    const res = await API.post("/auth/logout");
+    return res.data;
+  } catch (err) {
+    return err.response?.data || { message: "Logout failed" };
+  }
+}
+
 
 export default API;

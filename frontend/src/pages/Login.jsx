@@ -20,6 +20,8 @@ export default function Login({ onLogin }) {
     try {
       const data = await postJSON("/auth/login", { email, password });
 
+      localStorage.setItem("token", data.token);
+
       setMessage({ text: "Login successful", type: "info" });
       onLogin({ email });
 

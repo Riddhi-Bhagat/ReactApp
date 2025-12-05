@@ -18,11 +18,11 @@ app.use("/api/user", userRoutes);
 
 // DB Connect + Sync
 db.sequelize.authenticate()
-  .then(() => console.log("✅ DB connected"))
+  .then(() => console.log("DB connected"))
   .then(() => db.sequelize.sync())
-  .then(() => console.log("🗂️ Tables synced"))
-  .catch(err => console.log("❌ DB Error:", err));
+  .then(() => console.log("Tables synced"))
+  .catch(err => console.log("DB Error:", err));
 
 app.listen(process.env.PORT, () =>
-  console.log("🚀 Server running on " + process.env.PORT)
+  console.log("Server running on " + process.env.PORT)
 );
