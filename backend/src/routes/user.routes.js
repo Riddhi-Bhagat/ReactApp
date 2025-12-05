@@ -1,11 +1,10 @@
-const express = require('express');
+const express = require("express");
 const router = express.Router();
-const auth = require('../middlewares/auth.middleware');
 
-// CONTROLLER exports are getMe / updateMe — import those names
-const { getMe, updateMe } = require('../controllers/user.controller');
+const auth = require("../middlewares/auth.middleware");
+const { getMe, updateMe } = require("../controllers/user.controller.js");
 
-router.get('/me', auth, getMe);
-router.put('/me', auth, updateMe);
+router.get("/me", auth, getMe);
+router.put("/me", auth, updateMe);
 
 module.exports = router;

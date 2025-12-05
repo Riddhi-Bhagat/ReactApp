@@ -1,8 +1,8 @@
 const jwt = require('jsonwebtoken');
-const SECRET = process.env.JWT_SECRET || 'please_change_this_secret';
+const SECRET = process.env.JWT_SECRET || 'secret123';
 
-function sign(payload, expiresIn='1h') {
-  return jwt.sign(payload, SECRET, { algorithm: 'HS256', expiresIn });
+function sign(payload) {
+  return jwt.sign(payload, SECRET, { expiresIn: '1h' });
 }
 
 function verify(token) {

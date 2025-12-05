@@ -6,7 +6,7 @@ dotenv.config();
 const authRoutes = require("./routes/auth.routes.js");
 const userRoutes = require("./routes/user.routes.js");
 
-const db = require("../models"); // Sequelize Index.js
+const db = require("../models");
 
 const app = express();
 app.use(cors({ origin: "http://localhost:5173", credentials: true }));
@@ -16,20 +16,13 @@ app.use(express.json());
 app.use("/api/auth", authRoutes);
 app.use("/api/user", userRoutes);
 
-// Connect & Sync DB
-db.sequelize
-  .authenticate()
-  .then(() => {
-    console.log("✅ Database Connected Successfully");
+// DB Connect + Sync
+db.sequelize.authenticate()
+  .then(() => console.log("✅ DB connected"))
+  .then(() => db.sequelize.sync())
+  .then(() => console.log("🗂️ Tables synced"))
+  .catch(err => console.log("❌ DB Error:", err));
 
-    // Sync tables
-    return db.sequelize.sync(); // ←⭐ ADD THIS
-  })
-  .then(() => {
-    console.log("🗂️ Tables synced successfully");
-  })
-  .catch((err) => console.error("❌ DB Error:", err));
-
-app.listen(process.env.PORT, () => {
-  console.log("🚀 Server running on port " + process.env.PORT);
-});
+app.listen(process.env.PORT, () =>
+  console.log("🚀 Server running on " + process.env.PORT)
+);

@@ -21,8 +21,6 @@ export default function Login({ onLogin }) {
       const data = await postJSON("/auth/login", { email, password });
 
       setMessage({ text: "Login successful", type: "info" });
-
-      // backend returns token -> no user object
       onLogin({ email });
 
     } catch (err) {

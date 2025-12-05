@@ -1,9 +1,8 @@
 import axios from "axios";
 
-// Backend Base URL
 const API = axios.create({
-  baseURL: import.meta.env.VITE_API_BASE || "http://localhost:5000",
-  withCredentials: true, // cookies send/receive
+  baseURL: "http://localhost:5000/api",   // <- FINAL FIX
+  withCredentials: true,
 });
 
 // POST request
