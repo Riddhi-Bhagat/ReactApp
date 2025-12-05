@@ -16,13 +16,17 @@ export default function Login({ onLogin }) {
     }
     setLoading(true);
     setMessage(null);
+
     try {
-      // backend returns user object (and sets HttpOnly cookie if configured)
       const data = await postJSON("/auth/login", { email, password });
+
       setMessage({ text: "Login successful", type: "info" });
-      onLogin(data.user);
+
+      // backend returns token -> no user object
+      onLogin({ email });
+
     } catch (err) {
-      setMessage({ text: err.body?.message || err.message, type: "error" });
+      setMessage({ text: err.message || "Login failed", type: "error" });
     } finally {
       setLoading(false);
     }
@@ -32,16 +36,21 @@ export default function Login({ onLogin }) {
     <div>
       <h2>Login</h2>
       <Notification message={message?.text} type={message?.type} />
+
       <form onSubmit={submit}>
         <div style={{ marginBottom: 8 }}>
           <label>Email</label><br />
           <input value={email} onChange={e=>setEmail(e.target.value)} />
         </div>
+
         <div style={{ marginBottom: 8 }}>
           <label>Password</label><br />
           <input type="password" value={password} onChange={e=>setPassword(e.target.value)} />
         </div>
-        <button disabled={loading} type="submit">{loading ? "Logging..." : "Login"}</button>
+
+        <button disabled={loading} type="submit">
+          {loading ? "Logging..." : "Login"}
+        </button>
       </form>
     </div>
   );

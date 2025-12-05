@@ -1,6 +1,6 @@
 const { User } = require("../../models");
 
-exports.getProfile = async (req, res) => {
+exports.getMe = async (req, res) => {
   try {
     const user = await User.findOne({ where: { id: req.user.id } });
 
@@ -12,7 +12,7 @@ exports.getProfile = async (req, res) => {
   }
 };
 
-exports.updateProfile = async (req, res) => {
+exports.updateMe = async (req, res) => {
   try {
     const { name, phone } = req.body;
 

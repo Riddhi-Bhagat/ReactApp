@@ -10,8 +10,9 @@ module.exports = {
       },
       user_id: {
         type: Sequelize.INTEGER,
-        references: { model: "users", key: "id" },
+        references: { model: "Users", key: "id" }, // <-- match Users table
         onDelete: "CASCADE",
+        allowNull: false
       },
       login_time: {
         type: Sequelize.DATE,

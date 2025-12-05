@@ -1,49 +1,39 @@
-const API_BASE = import.meta.env.VITE_API_BASE || "/api";
+import axios from "axios";
 
-export async function postJSON(path, body, opts={}) {
-  const res = await fetch(`${API_BASE}${path}`, {
-    method: "POST",
-    credentials: "include",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(body),
-    ...opts
-  });
-  const json = await res.json().catch(()=>null);
-  if (!res.ok) {
-    const err = new Error(json?.message || 'Request failed');
-    err.status = res.status;
-    err.body = json;
-    throw err;
+// Backend Base URL
+const API = axios.create({
+  baseURL: import.meta.env.VITE_API_BASE || "http://localhost:5000",
+  withCredentials: true, // cookies send/receive
+});
+
+// POST request
+export async function postJSON(path, body) {
+  try {
+    const res = await API.post(path, body);
+    return res.data;
+  } catch (err) {
+    throw err.response?.data || { message: "Request failed" };
   }
-  return json;
 }
 
-export async function getJSON(path, opts={}) {
-  const res = await fetch(`${API_BASE}${path}`, { credentials: "include", ...opts });
-  const json = await res.json().catch(()=>null);
-  if (!res.ok) {
-    const err = new Error(json?.message || "Request failed");
-    err.status = res.status;
-    err.body = json;
-    throw err;
+// GET request
+export async function getJSON(path) {
+  try {
+    const res = await API.get(path);
+    return res.data;
+  } catch (err) {
+    throw err.response?.data || { message: "Request failed" };
   }
-  return json;
 }
 
-export async function putJSON(path, body, opts={}) {
-  const res = await fetch(`${API_BASE}${path}`, {
-    method: "PUT",
-    credentials: "include",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(body),
-    ...opts
-  });
-  const json = await res.json().catch(()=>null);
-  if (!res.ok) {
-    const err = new Error(json?.message || 'Request failed');
-    err.status = res.status;
-    err.body = json;
-    throw err;
+// PUT request
+export async function putJSON(path, body) {
+  try {
+    const res = await API.put(path, body);
+    return res.data;
+  } catch (err) {
+    throw err.response?.data || { message: "Request failed" };
   }
-  return json;
 }
+
+export default API;
